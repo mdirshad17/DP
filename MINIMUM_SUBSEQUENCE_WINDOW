@@ -1,0 +1,104 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define      M    1000000007
+#define      hM   9999999900000001
+#define      int long long int
+#define      vi vector<int>
+#define      vvi vector<vi>
+#define      vpi vector<pair<int,int>>
+#define      pii pair<int,int>
+#define      pb push_back
+#define      inf 1e18
+#define      ff first
+#define      ss  second
+#define      line  "\n"
+#define      deb(x) cout<<#x<<" "<<x<<endl;
+#define      all(x) x.begin(),x.end()
+#define      printVec(vec) {for(auto &x : vec) cout << x <<" "; cout << endl; }
+const int N = 1e5 + 10;
+
+//int BIT[N];
+//void add(int x, int val) {while (x < N)BIT[x] += val, x += x & -x;}
+//int sum(int x) {return x ? BIT[x] + sum(x - (x & -x)) : 0;}
+
+vector<vector<int> > dp;
+int anss = 0;
+int solve(int s1, int s2, string & s, string & p)
+{
+  anss++;
+  if (s2 >= p.size())
+    return 0;
+
+  if (s1 >= s.size())
+    return INT_MAX / 100;
+
+  if (dp[s1][s2] != -1)
+    return dp[s1][s2];
+
+  int ans = 0;
+  if (s[s1] == p[s2])
+  {
+    ans = 1 + solve(s1 + 1, s2 + 1, s, p);
+  } else ans = 1 + solve(s1 + 1, s2, s, p);
+  return dp[s1][s2] = ans;
+}
+string minWindow(string &S, string &T)
+{
+  int m = T.size();
+  int n = S.size();
+  if (m > n)
+    return "";
+  dp.clear();
+  dp.assign(n + 5, vector<int>(m + 5, -1));
+  int ans = INT_MAX;
+  int si = -1;
+  for (int i = 0; i < n; i++)
+  {
+    if (S[i] == T[0])
+    {
+      int l = solve(i, 0, S, T);
+      if (l <= n && l < ans)
+      {
+        si = i;
+        ans = l;
+      }
+    }
+  }
+  cout << anss << endl;
+  if (si == -1)
+    return "";
+
+  return S.substr(si, ans);
+
+}
+
+void runcases(int T)
+{
+
+  string s, p;
+  cin >> s >> p;
+  string d = minWindow(s, p);
+  cout << d << endl;
+
+
+
+  //cout << "Case #" << T << ": ";
+}
+
+int32_t main()
+{
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+#ifndef ONLINE_JUDGE
+  // freopen("inputf.txt", "r", stdin);
+  // freopen("outputf.txt", "w", stdout);
+#endif
+  int T = 1;
+  //cin >> T;
+  for (int t = 1; t <= T; t++) {
+    runcases(t);
+  }
+
+  return 0;
+}
+
